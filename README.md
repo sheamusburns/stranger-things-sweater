@@ -4,8 +4,9 @@ Made with Adafruit Flora and Flora neopixels.
 
 <img src='/images/sweater_all_lit.jpg' width=300px />
 
-## Video Demo
+## Demo
 
-https://www.youtube.com/embed/kmkPtfrMPtY
+<img src='/images/sweater_wipe.gif' width=300px />
 
-https://www.youtube.com/embed/pJY_QjGWo0U
+<img src='/images/sweater_message.gif' width=300px />
+
