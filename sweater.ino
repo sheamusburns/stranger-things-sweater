@@ -212,6 +212,8 @@ void pause() {
   delay(1000);
 }
 
+
+
 void fadeOn(int pixel, uint32_t color, int wait) {
   uint32_t del;
   for (int i=0; i<maxBrightness; i++) {
@@ -220,7 +222,7 @@ void fadeOn(int pixel, uint32_t color, int wait) {
     strip.setPixelColor(pixel, color);
     strip.setBrightness(i);
     strip.show();
-    delay(del);
+    delay(del/2);
   }
 }
 
@@ -232,7 +234,7 @@ void fadeOff(int pixel, uint32_t color, int wait) {
     strip.setPixelColor(pixel, color);
     strip.setBrightness(i);
     strip.show();
-    delay(del);
+    delay(del/2);
   }
 }
 
