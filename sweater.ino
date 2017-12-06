@@ -9,12 +9,15 @@ class NeoPixel_Letter {
 };
 
 NeoPixel_Letter::NeoPixel_Letter(int num) {
-	location = num;
+  location = num;
 }
 
 void NeoPixel_Letter::set_location(int num) {
   location = num;
 }
+
+#define PIN 12
+#define Pixels 26
 
 NeoPixel_Letter a(18), b(19), c(20), d(21), e(22), f(23), g(24), h(25),
 i(17), j(16), k(15), l(14), m(13), n(12), o(11), p(10), q(9),
@@ -24,14 +27,13 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(26, PIN, NEO_GRB + NEO_KHZ800);
 
 
 
-#define PIN 12
-#define Pixels 26
+
 
 float redStates[Pixels];
 float blueStates[Pixels];
 float greenStates[Pixels];
 float fadeRate = 0.96;
-uint32_t maxBrightness = 40;
+uint32_t maxBrightness = 255;
 
 
 
@@ -39,14 +41,17 @@ void setup() {
   Serial.begin(9600);
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-}
-
-void loop() {
-  colorWipe(Wheel(30), 100);
-  colorWipe(Wheel(random(255)), 100);
-//  //colorWipe((0,0,0), 100);
-//  upsideDown();
   
+}
+  int arr[] = {1, 2, 3, 5, 4};
+  typedef int array_type[5];
+  array_type& ra = arr;
+  
+void loop() {
+  colorWipe(Wheel(random(255)), 100);
+  delay(1000);
+  upsideDown();
+  delay(1000);
 }
 
 void endMessage() {
@@ -92,7 +97,12 @@ void tooMuchSauce(){
   printLetter(e);
 }
 
-
+void rera() {
+  printLetter(r);
+  printLetter(e);
+  printLetter(r);
+  printLetter(a);
+}
 void aLittleTipsy(){
   printLetter(i);
   pause();
@@ -212,29 +222,38 @@ void pause() {
   delay(1000);
 }
 
-
+void clearStrip() {
+  for (uint32_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, 0, 0, 0);
+  }
+  strip.show();
+}
 
 void fadeOn(int pixel, uint32_t color, int wait) {
-  uint32_t del;
+  uint32_t del = 30;
   for (int i=0; i<maxBrightness; i++) {
-    del = 40 * cos(i/(10*3.14156));
+    if (i < 95) {
+      del = 40 * cos(i/(20*3.14156));
+    }
     Serial.println(del);
     strip.setPixelColor(pixel, color);
     strip.setBrightness(i);
     strip.show();
-    delay(del/2);
+    delay(del/10);
   }
 }
 
 void fadeOff(int pixel, uint32_t color, int wait) {
-  uint32_t del;
+  uint32_t del = 30;
   for (int i=maxBrightness; i>=0; i--) {
-    del = 40 * cos(i/(10*3.14156));
+    if (i < 95) {
+      del = 40 * cos(i/(20*3.14156));
+    }
     Serial.println(del);
     strip.setPixelColor(pixel, color);
     strip.setBrightness(i);
     strip.show();
-    delay(del/2);
+    delay(del/10);
   }
 }
 
@@ -246,10 +265,18 @@ void breathe(int pixel, int wait) {
 
 
 void colorWipe(uint32_t c, int wait) {
-  for(int i=0; i<strip.numPixels(); i++) {
+  delay(200);
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
     strip.setPixelColor(i, c);
+    Serial.print(i);
     strip.setBrightness(40);
     strip.show();
+    if (i == 0) { //this is bizarre, but for some reason the first pixel wont light unless I double run this code when i == 0
+      strip.setPixelColor(i, c);
+      Serial.print(i);
+      strip.setBrightness(40);
+      strip.show();
+    }
     delay(wait);
   }
 }
